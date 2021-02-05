@@ -1,0 +1,7 @@
+.app{
+    display: flex;
+    margin: 50px;
+}
+.todolist__block{
+    margin: 50px;
+}
