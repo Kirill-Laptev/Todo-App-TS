@@ -43,6 +43,24 @@ const App = () => {
     setTasks([newTask, ...tasks])
   }
 
+  // const changeTaskStatus = (taskID: string) => {
+  //   let task = tasks.find((task) => task.id === taskID)
+  //   if(task){
+  //     task.isDone = !task.isDone
+  //   }
+  //   setTasks([...tasks])        // Не по правилам иммутабельности ?????
+  // }
+
+
+  const changeTaskStatus = (taskID: string) => {
+    const copyTasks = [...tasks]
+    let task = copyTasks.find((task) => task.id === taskID)
+    if(task){
+      task.isDone = !task.isDone
+    }
+    setTasks([...copyTasks])          // Здесь все-равно делается поверхностное копирование
+  }
+
   return (
     <div className={s.app}>
       <TodoList 
@@ -50,7 +68,9 @@ const App = () => {
       tasks={tasksForTodolist} 
       removeTask={removeTask}
       changeFilter={changeFilter}
-      addTask={addTask}/>
+      addTask={addTask}
+      changeTaskStatus={changeTaskStatus}
+      filter={filter}/>
     </div>
   );
 }

@@ -14,24 +14,32 @@ type PropsType = {
     removeTask: (id: string) => void
     changeFilter: (value: FilterValuesType) => void
     addTask: (value: string) => void
+    changeTaskStatus: (taskID: string) => void
+    filter: FilterValuesType
 }
 
 const TodoList: React.FC<PropsType> = (props) => {
 
     const [value, setValue] = React.useState('')
+    const [error, setError] = React.useState<string | null>(null);
 
-    const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setError(null)
         setValue(event.target.value)
     }
 
-    const handleOnAddTask = () => {
-        props.addTask(value)
-        setValue('')
+    const onAddTaskHandler = () => {
+        if(value.trim()){    
+            props.addTask(value.trim())
+            setValue('')
+        } else{
+            setError('Field is required')
+        }
     }
 
     const onPressKeyHandler = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if(event.charCode === 13){
-            handleOnAddTask()
+            onAddTaskHandler()
         }
     }
 
@@ -49,21 +57,36 @@ const TodoList: React.FC<PropsType> = (props) => {
         <div className={s.todolist__block}>
             <div>{props.title}</div>
             <div>
-                <input type='text' onChange={handleOnChange} onKeyPress={onPressKeyHandler} value={value}/>
-                <button onClick={handleOnAddTask}>+</button></div>
+                <input 
+                    type='text' 
+                    className={error ? 'error' : ''}
+                    onChange={onChangeHandler} 
+                    onKeyPress={onPressKeyHandler} 
+                    value={value}/>
+                <button onClick={onAddTaskHandler}>+</button></div>
+                {error && <div className='error__message'>{error}</div>}
             <ul>
                 {props.tasks.map((task) => {
-                    return <li key={task.id}>
-                    <input type='checkbox' checked={task.isDone} />
+
+                    const onCrossClickHandler = () => {
+                        props.removeTask(task.id)
+                    }
+
+                    const changeTaskStatusHandler = () => {
+                        props.changeTaskStatus(task.id)
+                    }
+
+                    return <li key={task.id} className={task.isDone ? 'is-done' : ''}>
+                    <input type='checkbox' checked={task.isDone}  onChange={changeTaskStatusHandler}/>
                     <span>{task.title}</span>
-                    <button onClick={() => props.removeTask(task.id)}>x</button>
+                    <button onClick={onCrossClickHandler}>x</button>
                     </li>            
                 })}
             </ul>
             <div>
-                <button onClick={onAllClickHandler}>All</button>
-                <button onClick={onActiveClickHandler}>Active</button>
-                <button onClick={onComplitedClickHandler}>Completed</button>
+                <button className={props.filter === 'all' ? 'active__filter' : ''} onClick={onAllClickHandler}>All</button>
+                <button className={props.filter === 'active' ? 'active__filter' : ''} onClick={onActiveClickHandler}>Active</button>
+                <button className={props.filter === 'complited' ? 'active__filter' : ''} onClick={onComplitedClickHandler}>Completed</button>
             </div>
         </div>
     )
