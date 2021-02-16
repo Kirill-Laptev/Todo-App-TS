@@ -3,6 +3,7 @@ import './App.css';
 import TodoList from './components/TodoList/TodoList';
 import s from './components/TodoList/TodoList.module.css'
 import {v1} from 'uuid' 
+import AddItemForm from './components/TodoList/AddItemForm';
 
 export type FilterValuesType = 'all' | 'active' | 'complited'
 
@@ -12,12 +13,22 @@ type TodolistsType = {
   filter: FilterValuesType
 }
 
+export type TaskType = {
+  id: string
+  title: string
+  isDone: boolean
+}
+
+type TasksStateType = {
+  [key: string]: Array<TaskType>
+}
+
 const App = () => {
 
   const todolistID1 = v1()
   const todolistID2 = v1()
 
-  const [tasksObj, setTasks] = React.useState({
+  const [tasksObj, setTasks] = React.useState<TasksStateType>({
     [todolistID1]: [
       {id: v1(), title: 'JS', isDone: true},
       {id: v1(), title: 'ReactJS', isDone: true},
@@ -78,35 +89,27 @@ const App = () => {
     setTasks({...tasksObj})
   }
 
-  // const changeTaskStatus = (taskID: string) => {
-  //   const copyTasks = [...tasks]
-  //   let task = copyTasks.find((task) => task.id === taskID)
-  //   if(task){
-  //     task.isDone = !task.isDone
-  //   }
-  //   setTasks([...copyTasks])          // Здесь все-равно делается поверхностное копирование
-  // }
+  const addNewTodolist = (title: string) => {
+    const newTodoList: TodolistsType = {id: v1(), title: title, filter: 'all'}
+    setTodolists([newTodoList, ...todolists])
+    setTasks({...tasksObj, [newTodoList.id]: []})  // Добавляем для нового тудулиста пустой массив
+  }
 
-
-  // const changeTaskStatus = (taskID: string) => {
-  //   const copyTasks = [...tasks]
-  //   const indexCheckbox = copyTasks.findIndex((obj) => obj.id === taskID)
-  //   const newArr = copyTasks.map((task, index) => {
-  //     if(indexCheckbox === index){
-  //       return {...task, isDone: !task.isDone}
-  //     }
-  //     return task
-  //   }) 
-
-  //   console.log(tasks)
-  //   console.log(newArr)
-  //   setTasks(newArr)          // Получилось сделать иммутабельно !!!
-  // }                           
-
+  const changeTaskTitle = (value: string, taskID: string, todolistID: string) => {
+    const tasksTodolist = tasksObj[todolistID]
+    const task = tasksTodolist.find((task) => task.id === taskID)
+    if(task){
+      debugger
+      task.title = value
+      setTasks({...tasksObj})
+    }
+  }
   
+
 
   return (
     <div className={s.app}>
+      <AddItemForm addItem={addNewTodolist}/>
       {todolists.map((tl) => {
 
         let tasksForTodolist = tasksObj[tl.id];
@@ -119,9 +122,14 @@ const App = () => {
           tasksForTodolist = tasksForTodolist.filter((task) => task.isDone === true)
         }
 
+        const editTaskTitle = (value: string, taskID: string) => {
+          changeTaskTitle(value, taskID, tl.id)
+        }
+
+
         return <TodoList 
         key={tl.id}
-        id={tl.id}
+        todolistID={tl.id}
         title={tl.title} 
         tasks={tasksForTodolist} 
         removeTask={removeTask}
@@ -129,7 +137,8 @@ const App = () => {
         addTask={addTask}
         changeTaskStatus={changeTaskStatus}
         filter={tl.filter}
-        removeTodolist={removeTodolist}/>
+        removeTodolist={removeTodolist}
+        editTaskTitle={editTaskTitle}/>
       })}
     </div>
   );
