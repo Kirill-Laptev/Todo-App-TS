@@ -1,3 +1,5 @@
+import { IconButton, TextField } from '@material-ui/core'
+import { AddBox } from '@material-ui/icons'
 import React from 'react'
 
 type AddItemPropsType = {
@@ -7,7 +9,7 @@ type AddItemPropsType = {
 const AddItemForm: React.FC<AddItemPropsType> = (props) => {
 
     const [error, setError] = React.useState<string | null>(null)
-    const [value, setValue] = React.useState<string>('')  // Тип ???
+    const [value, setValue] = React.useState<string>('')  
     
     const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         setError(null)
@@ -32,15 +34,19 @@ const AddItemForm: React.FC<AddItemPropsType> = (props) => {
   return (
     <>
       <div>
-        <input
+        <TextField
+          variant='outlined'
           type='text'
-          className={error ? "error" : ""}
+          label='Title'
+          helperText={error}
+          error={!!error}
           onChange={onChangeHandler}
           onKeyPress={onPressKeyHandler}
           value={value}/>
-        <button onClick={onAddItemHandler}>+</button>
+        <IconButton color='primary' onClick={onAddItemHandler}>
+          <AddBox />
+        </IconButton>
       </div>
-      {error && <div className='error__message'>{error}</div>}
     </>
   )
 }

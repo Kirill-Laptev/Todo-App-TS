@@ -4,6 +4,8 @@ import TodoList from './components/TodoList/TodoList';
 import s from './components/TodoList/TodoList.module.css'
 import {v1} from 'uuid' 
 import AddItemForm from './components/TodoList/AddItemForm';
+import Header from './components/Header';
+import { Container, Grid, Paper } from '@material-ui/core';
 
 export type FilterValuesType = 'all' | 'active' | 'complited'
 
@@ -43,7 +45,7 @@ const App = () => {
 
   const [todolists, setTodolists] = React.useState<Array<TodolistsType>>([
       {id: todolistID1, title: 'What to learn', filter: 'all'},
-      {id: todolistID2, title: 'What to buy', filter: 'active'}
+      {id: todolistID2, title: 'What to buy', filter: 'all'}
   ])  
 
 
@@ -109,7 +111,12 @@ const App = () => {
 
   return (
     <div className={s.app}>
-      <AddItemForm addItem={addNewTodolist}/>
+      
+      <Header />
+
+      <Container fixed>
+      <Grid container style={{padding: '20px 20px 20px 0'}}><AddItemForm addItem={addNewTodolist}/></Grid>
+      <Grid container spacing={3}>
       {todolists.map((tl) => {
 
         let tasksForTodolist = tasksObj[tl.id];
@@ -127,19 +134,25 @@ const App = () => {
         }
 
 
-        return <TodoList 
-        key={tl.id}
-        todolistID={tl.id}
-        title={tl.title} 
-        tasks={tasksForTodolist} 
-        removeTask={removeTask}
-        changeFilter={changeFilter}
-        addTask={addTask}
-        changeTaskStatus={changeTaskStatus}
-        filter={tl.filter}
-        removeTodolist={removeTodolist}
-        editTaskTitle={editTaskTitle}/>
+        return <Grid item>
+          <Paper style={{padding: '10px'}}>
+            <TodoList 
+              key={tl.id}
+              todolistID={tl.id}
+              title={tl.title} 
+              tasks={tasksForTodolist} 
+              removeTask={removeTask}
+              changeFilter={changeFilter}
+              addTask={addTask}
+              changeTaskStatus={changeTaskStatus}
+              filter={tl.filter}
+              removeTodolist={removeTodolist}
+              editTaskTitle={editTaskTitle}/>
+          </Paper>
+        </Grid>
       })}
+      </Grid>
+      </Container>
     </div>
   );
 }
