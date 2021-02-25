@@ -9,7 +9,7 @@ import { Container, Grid, Paper } from '@material-ui/core';
 
 export type FilterValuesType = 'all' | 'active' | 'complited'
 
-type TodolistsType = {
+export type TodolistsType = {
   id: string
   title: string
   filter: FilterValuesType
@@ -21,7 +21,7 @@ export type TaskType = {
   isDone: boolean
 }
 
-type TasksStateType = {
+export type TasksStateType = {
   [key: string]: Array<TaskType>
 }
 
