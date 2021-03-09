@@ -57,7 +57,7 @@ export const tasksReducer = (state: TasksStateType, action: ActionType): TasksSt
                     if(task.id !== action.taskID){
                         return task
                     } else{
-                        return {...task, isDone: action.isDone}
+                        return {...task, isDone: !action.isDone}
                     }
                 })
             }

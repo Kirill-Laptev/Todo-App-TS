@@ -13,7 +13,7 @@ type PropsType = {
     removeTask: (id: string, todolistID: string) => void
     changeFilter: (value: FilterValuesType, todolistID: string) => void
     addTask: (value: string, todolistID: string) => void
-    changeTaskStatus: (taskID: string, todolistID: string) => void
+    changeTaskStatus: (taskID: string, todolistID: string, isDone: boolean) => void
     filter: FilterValuesType
     todolistID: string
     removeTodolist: (todolistID: string) => void
@@ -56,11 +56,11 @@ const TodoList: React.FC<PropsType> = (props) => {
                     }
 
                     const onCrossClickHandler = () => {
-                        props.removeTask(task.id, props.todolistID)
+                        props.removeTask(props.todolistID, task.id)
                     }
 
                     const changeTaskStatusHandler = () => {
-                        props.changeTaskStatus(task.id, props.todolistID)
+                        props.changeTaskStatus(props.todolistID, task.id, task.isDone)
                     }
 
                     return <div key={task.id} className={task.isDone ? 'is-done' : ''}>
