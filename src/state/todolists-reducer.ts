@@ -1,3 +1,4 @@
+import { todolistID1, todolistID2 } from './tasks-reducer';
 import { v1 } from 'uuid';
 import { TodolistsType, FilterValuesType } from './../App';
 
@@ -26,7 +27,13 @@ export type ChangeTodolistFilterActionType = {
     todolistID: string
 }
 
-export const todolistsReducer = (state: Array<TodolistsType>, action: ActionType): Array<TodolistsType> => {
+
+const initialState: Array<TodolistsType> = [
+    {id: todolistID1, title: 'What to learn', filter: 'all'},
+    {id: todolistID2, title: 'What to buy', filter: 'all'}
+]
+
+export const todolistsReducer = (state: Array<TodolistsType> = initialState, action: ActionType): Array<TodolistsType> => {
     switch(action.type){
         case 'REMOVE_TODOLIST':
             const filtredTodolists = state.filter((todolist) => todolist.id !== action.todolistID)
@@ -60,7 +67,7 @@ export const todolistsReducer = (state: Array<TodolistsType>, action: ActionType
 
 
         default:
-            throw new Error('I dont understand this type')
+            return state
     }
 }
 

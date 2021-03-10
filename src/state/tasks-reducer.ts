@@ -2,6 +2,7 @@ import { v1 } from 'uuid';
 import { TasksStateType } from './../App';
 import { AddTodolistActionType, RemoveTodolistActionType } from './todolists-reducer';
 
+
 export type RemoveTaskActionType = {
     type: 'REMOVE_TASK'
     todolistID: string
@@ -28,12 +29,28 @@ export type ChangeTaskTitleActionType = {
     title: string
 }
 
-
-
 export type ActionType = RemoveTaskActionType | AddTaskActionType | ChangeTaskStatusActionType | ChangeTaskTitleActionType | AddTodolistActionType | RemoveTodolistActionType
 
+// Это важный момент, чтобы у нас был одинаковый id.
+// Используем здесь в initialState и импортуруем для другого initialState в другой reducer.
+export const todolistID1 = v1()
+export const todolistID2 = v1()
 
-export const tasksReducer = (state: TasksStateType, action: ActionType): TasksStateType => {
+const initialState: TasksStateType = {
+    [todolistID1]: [
+      {id: v1(), title: 'JS', isDone: true},
+      {id: v1(), title: 'ReactJS', isDone: true},
+      {id: v1(), title: 'ExpressJS', isDone: false},
+      {id: v1(), title: 'Typescript', isDone: false},
+      {id: v1(), title: 'HTML/CSS', isDone: true}],
+      [todolistID2]: [
+        {id: v1(), title: 'Milk', isDone: false},
+        {id: v1(), title: 'Book', isDone: true},
+        {id: v1(), title: 'Food for cat', isDone: false}]
+  }
+
+
+export const tasksReducer = (state: TasksStateType = initialState, action: ActionType): TasksStateType => {
     switch(action.type){
         case 'REMOVE_TASK': {
             return {
@@ -90,7 +107,7 @@ export const tasksReducer = (state: TasksStateType, action: ActionType): TasksSt
         }
 
         default:
-            throw new Error('I dont understand this type')
+            return state
     }
 }
 
