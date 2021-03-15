@@ -1,6 +1,6 @@
 import { todolistID1, todolistID2 } from './tasks-reducer';
 import { v1 } from 'uuid';
-import { TodolistsType, FilterValuesType } from './../App';
+import { TodolistsType, FilterValuesType } from './../AppWithRedux';
 
 export type ActionType = RemoveTodolistActionType | AddTodolistActionType | ChangeTodolistTitleActionType | ChangeTodolistFilterActionType
 

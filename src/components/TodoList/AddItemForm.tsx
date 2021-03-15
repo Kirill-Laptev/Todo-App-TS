@@ -6,7 +6,9 @@ type AddItemPropsType = {
     addItem: (inputValue: string) => void
 }
 
-const AddItemForm: React.FC<AddItemPropsType> = (props) => {
+export const AddItemForm: React.FC<AddItemPropsType> = (props) => {
+
+    console.log('AddItem render')
 
     const [error, setError] = React.useState<string | null>(null)
     const [value, setValue] = React.useState<string>('')  
@@ -51,4 +53,4 @@ const AddItemForm: React.FC<AddItemPropsType> = (props) => {
   )
 }
 
-export default AddItemForm
+export default React.memo(AddItemForm)

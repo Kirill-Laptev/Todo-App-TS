@@ -3,10 +3,12 @@ import React from 'react'
 
 type EditableSpanPropsType = {
     title: string
-    editTaskTitle: (value: string) => void
+    changeTaskTitle: (value: string) => void
 }
 
 const EditableSpan: React.FC<EditableSpanPropsType> = (props) => {
+
+    console.log('EditableSpan render')
 
     const [editMode, setEditMode] = React.useState<boolean>(false)
     const [value, setValue] = React.useState<string>('')
@@ -20,7 +22,7 @@ const EditableSpan: React.FC<EditableSpanPropsType> = (props) => {
         setValue(props.title)
     }
     const onBlurHandler = () => {
-        props.editTaskTitle(value)
+        props.changeTaskTitle(value)
         setEditMode(false)
     }
 
@@ -40,4 +42,4 @@ const EditableSpan: React.FC<EditableSpanPropsType> = (props) => {
     )
 }
 
-export default EditableSpan
+export default React.memo(EditableSpan)

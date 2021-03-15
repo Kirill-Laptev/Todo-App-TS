@@ -1,8 +1,8 @@
-import { TasksStateType } from './../App';
+import { TasksStateType } from './../AppWithRedux';
 import { tasksReducer } from './tasks-reducer';
 import { todolistsReducer } from './todolists-reducer';
 import { combineReducers, createStore } from "redux";
-import { TodolistsType } from '../App';
+import { TodolistsType } from '../AppWithRedux';
 
 const rootReducer = combineReducers({
     todolists: todolistsReducer,
