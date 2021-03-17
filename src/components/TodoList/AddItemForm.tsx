@@ -2,7 +2,7 @@ import { IconButton, TextField } from '@material-ui/core'
 import { AddBox } from '@material-ui/icons'
 import React from 'react'
 
-type AddItemPropsType = {
+export type AddItemPropsType = {
     addItem: (inputValue: string) => void
 }
 

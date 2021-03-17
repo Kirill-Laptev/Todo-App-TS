@@ -4,7 +4,7 @@ import { Checkbox, IconButton } from '@material-ui/core'
 import { Delete } from '@material-ui/icons'
 import { TaskType } from '../../AppWithRedux'
 
-type TaskPropsType = {
+export type TaskPropsType = {
     changeTaskTitle: (todolistID: string, taskID: string, title: string) => void
     removeTask: (id: string, todolistID: string) => void
     changeTaskStatus: (taskID: string, todolistID: string, isDone: boolean) => void
