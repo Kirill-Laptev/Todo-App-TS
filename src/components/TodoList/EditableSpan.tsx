@@ -3,7 +3,7 @@ import React from 'react'
 
 type EditableSpanPropsType = {
     title: string
-    changeTaskTitle: (value: string) => void
+    changeItemTitle: (value: string) => void
 }
 
 const EditableSpan: React.FC<EditableSpanPropsType> = (props) => {
@@ -22,7 +22,7 @@ const EditableSpan: React.FC<EditableSpanPropsType> = (props) => {
         setValue(props.title)
     }
     const onBlurHandler = () => {
-        props.changeTaskTitle(value)
+        props.changeItemTitle(value)
         setEditMode(false)
     }
 
