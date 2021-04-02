@@ -22,6 +22,6 @@ TaskExample.args = {
     changeTaskTitle: changeTaskTitleCallback,
     removeTask: removeTaskCallback,
     changeTaskStatus: changeTaskStatusCallback,
-    task: {id: '1', todolistID: '1', title: 'new task', status: TaskStasuses.New,
+    task: {id: '1', todoListId: '1', title: 'new task', status: TaskStasuses.New,
     description: '', startDate: '', deadline: '', addedDate: '', order: 0, priority: TaskPriorities.Low}
 }

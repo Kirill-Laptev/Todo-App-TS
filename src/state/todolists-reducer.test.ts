@@ -29,13 +29,18 @@ test('correct todolist should be removed', () => {
 
 test('correct todolist should be added', () => {
 
-    const newTitle = 'New todolist'
+    const todolist = {
+        title: 'New todolist',
+        id: todolistID1,
+        addedDate: '',
+        order: 0
+    }
 
-    const action = addTodolistAC(newTitle)
+    const action = addTodolistAC(todolist)
     const endState = todolistsReducer(startState, action)
 
     expect(endState.length).toBe(3)
-    expect(endState[0].title).toBe(newTitle)
+    expect(endState[0].title).toBe('New todolist')
 })
 
 
@@ -46,7 +51,7 @@ test('correct todolist should be change title', () => {
     const action = {
         type: 'CHANGE_TODOLIST_TITLE' as const, 
         newTodolistTitle: newTodolistTitle, 
-        todolistID: todolistID2
+        todoListId: todolistID2
     }
 
     const endState = todolistsReducer(startState, action)
@@ -63,7 +68,7 @@ test('correct filter of todolist should be changed', () => {
     const action = {
         type: 'CHANGE_TODOLIST_FILTER' as const, 
         filter: newTodolistFilter, 
-        todolistID: todolistID2
+        todoListId: todolistID2
     }
 
     const endState = todolistsReducer(startState, action)

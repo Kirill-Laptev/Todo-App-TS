@@ -7,22 +7,22 @@ import Task from './Task'
 import EditableSpan from './EditableSpan'
 import { FilterValuesType } from '../../state/todolists-reducer'
 import { TaskItemType, TaskStasuses, todolistsAPI } from '../../api/todolists-api'
-import { setTasksAC } from '../../state/tasks-reducer'
+import { fetchTasksTC, setTasksAC } from '../../state/tasks-reducer'
 import { useDispatch } from 'react-redux'
 
 
 type PropsType = {
     title: string
     tasks: Array<TaskItemType>
-    removeTask: (id: string, todolistID: string) => void
-    changeFilter: (value: FilterValuesType, todolistID: string) => void
-    addTask: (value: string, todolistID: string) => void
-    changeTaskStatus: (taskID: string, todolistID: string, status: TaskStasuses) => void
-    changeTaskTitle: (todolistID: string, taskID: string, title: string) => void
-    changeTodolistTitle: (todolistID: string, title: string) => void
+    removeTask: (id: string, todoListId: string) => void
+    changeFilter: (value: FilterValuesType, todoListId: string) => void
+    addTask: (todoListId: string, value: string,) => void
+    changeTaskStatus: (taskID: string, todoListId: string, status: TaskStasuses) => void
+    changeTaskTitle: (todoListId: string, taskID: string, title: string) => void
+    changeTodolistTitle: (todoListId: string, title: string) => void
     filter: FilterValuesType
-    todolistID: string
-    removeTodolist: (todolistID: string) => void
+    todoListId: string
+    removeTodolist: (todoListId: string) => void
 }
 
 const TodoList: React.FC<PropsType> = (props) => {
@@ -30,23 +30,20 @@ const TodoList: React.FC<PropsType> = (props) => {
     const dispatch = useDispatch()
 
     useEffect(() => {
-        todolistsAPI.getTasks(props.todolistID)
-        .then((data) => {
-            dispatch(setTasksAC(props.todolistID, data.items))
-        })
+        dispatch(fetchTasksTC(props.todoListId))
     }, [])
 
-    const onRemoveTodolist = useCallback(() => { props.removeTodolist(props.todolistID)}, [props.changeFilter, props.todolistID])
+    const onRemoveTodolist = useCallback(() => { props.removeTodolist(props.todoListId)}, [props.changeFilter, props.todoListId])
 
-    const onAllClickHandler = useCallback(() => { props.changeFilter('all', props.todolistID)}, [props.changeFilter, props.todolistID])
+    const onAllClickHandler = useCallback(() => { props.changeFilter('all', props.todoListId)}, [props.changeFilter, props.todoListId])
    
-    const onActiveClickHandler = useCallback(() => { props.changeFilter('active', props.todolistID)}, [props.changeFilter, props.todolistID])
+    const onActiveClickHandler = useCallback(() => { props.changeFilter('active', props.todoListId)}, [props.changeFilter, props.todoListId])
     
-    const onComplitedClickHandler = useCallback(() => { props.changeFilter('complited', props.todolistID)}, [props.changeFilter, props.todolistID])
+    const onComplitedClickHandler = useCallback(() => { props.changeFilter('complited', props.todoListId)}, [props.changeFilter, props.todoListId])
 
-    const addTask = useCallback((inputValue: string) => { props.addTask(inputValue, props.todolistID)}, [props.addTask, props.todolistID])
+    const addTask = useCallback((inputValue: string) => { props.addTask(props.todoListId, inputValue)}, [props.addTask, props.todoListId])
 
-    const changeTodolistTitleHandler = useCallback((title: string) => { props.changeTodolistTitle(props.todolistID, title)}, [props.todolistID])
+    const changeTodolistTitleHandler = useCallback((title: string) => { props.changeTodolistTitle(props.todoListId, title)}, [props.todoListId])
 
     let tasks = props.tasks
 
@@ -74,7 +71,7 @@ const TodoList: React.FC<PropsType> = (props) => {
                     removeTask={props.removeTask}
                     changeTaskStatus={props.changeTaskStatus}
                     task={task}
-                    todolistID={props.todolistID}
+                    todoListId={props.todoListId}
                      />
                 })}
             <div>
