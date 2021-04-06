@@ -1,7 +1,7 @@
 import { TaskPriorities } from './../api/todolists-api';
 import { addTodolistAC, removeTodolistAC } from './todolists-reducer';
-import { removeTaskAC, tasksReducer, addTaskAC, updateTaskAC, changeTaskTitleAC, UpdateDomainTaskModelType } from './tasks-reducer';
-import { TasksStateType } from '../AppWithRedux';
+import { removeTaskAC, tasksReducer, addTaskAC, updateTaskAC, UpdateDomainTaskModelType } from './tasks-reducer';
+import { TasksStateType } from './tasks-reducer'
 import { TaskStasuses } from '../api/todolists-api';
 
 let startState: TasksStateType;
@@ -74,7 +74,7 @@ test('status of specified task should be changed', () => {
 
   test('title task should be changed', () => {
  
-    const action = changeTaskTitleAC("todolistID2", "2", "Notebook");
+    const action = updateTaskAC("todolistID2", "2", {title: 'Notebook'});
  
     const endState = tasksReducer(startState, action)
  

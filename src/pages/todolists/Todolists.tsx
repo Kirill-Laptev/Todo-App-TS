@@ -1,24 +1,16 @@
 import React, { useCallback, useEffect } from 'react';
-import './App.css';
-import TodoList from './components/TodoList/TodoList';
-import s from './components/TodoList/TodoList.module.css'
-import Header from './components/Header';
-import AddItemForm from './components/TodoList/AddItemForm';
+import TodoList from './Todolist/TodoList';
+import AddItemForm from '../../components/AddItemForm/AddItemForm';
 import { Container, Grid, Paper } from '@material-ui/core';
-import { changeTodolistFilterAC, removeTodolistAC, addTodolistAC, changeTodolistTitleAC, TodolistDomainType, FilterValuesType, setTodolistsAC, fetchTodolistsTC, deleteTodolistTC, createTodolistTC, updateTodolistTitleTC } from './state/todolists-reducer';
-import { updateTaskAC, changeTaskTitleAC, removeTaskTC, AddTaskTC, updateTaskTC } from './state/tasks-reducer';
+import { changeTodolistFilterAC, removeTodolistAC, addTodolistAC, changeTodolistTitleAC, TodolistDomainType, FilterValuesType, setTodolistsAC, fetchTodolistsTC, deleteTodolistTC, createTodolistTC, updateTodolistTitleTC } from '../../state/todolists-reducer';
+import { updateTaskAC, removeTaskTC, AddTaskTC, updateTaskTC, TasksStateType } from '../../state/tasks-reducer';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppRootState } from './state/store';
-import { TaskItemType, TaskStasuses, todolistsAPI } from './api/todolists-api';
+import { AppRootState } from '../../state/store';
+import { TaskItemType, TaskStasuses, todolistsAPI } from '../../api/todolists-api';
 
 
 
-export type TasksStateType = {
-  [key: string]: Array<TaskItemType>
-}
-
-const AppWithRedux = () => {
-
+const Todolists = () => {
 
   const dispatch = useDispatch()
   const todolists = useSelector<AppRootState, Array<TodolistDomainType>>((state) => state.todolists)
@@ -63,11 +55,7 @@ const AppWithRedux = () => {
 
 
   return (
-    <div className={s.app}>
-      
-      <Header />
-
-      <Container fixed>
+    <>
       <Grid container style={{padding: '20px 20px 20px 0'}}>
         <AddItemForm addItem={addNewTodolist}/>
       </Grid>
@@ -94,9 +82,9 @@ const AppWithRedux = () => {
         </Grid>
       })}
       </Grid>
-      </Container>
-    </div>
+      </>
   );
 }
 
-export default AppWithRedux;
+
+export default Todolists;

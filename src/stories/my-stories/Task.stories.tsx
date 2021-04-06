@@ -1,7 +1,7 @@
 import React from 'react';
 import { Story, Meta } from '@storybook/react/types-6-0';
 import { action } from '@storybook/addon-actions';
-import Task, { TaskPropsType } from '../../components/TodoList/Task';
+import Task, { TaskPropsType } from '../../pages/todolists/Todolist/Task/Task';
 import { TaskPriorities, TaskStasuses } from '../../api/todolists-api';
 
 export default {
