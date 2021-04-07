@@ -1,3 +1,4 @@
+import { HandleAppNetworkError, HandleAppServerError } from './../helpers/error-handlers';
 import { AppRootState } from './store';
 import { TaskItemType, TaskStasuses, TaskPriorities, todolistsAPI, UpdateTaskModelType } from './../api/todolists-api';
 import { AddTodolistActionType, RemoveTodolistActionType, SetTodolistsActionType } from './todolists-reducer';
@@ -112,8 +113,13 @@ export const removeTaskTC = (todoListId: string, taskID: string) => {
             .then(({data}) => {
                 if(data.resultCode === 0) {
                 dispatch(removeTaskAC(todoListId, taskID))
+            } else{
+                HandleAppServerError(data, dispatch)
             }
         })
+        .catch((error) => {
+            HandleAppNetworkError(error, dispatch) 
+        })  
     }
 }
 
@@ -126,17 +132,11 @@ export const AddTaskTC = (todoListId: string, title: string) => {
                 dispatch(addTaskAC(data.data.item))
                 dispatch(setAppStatusAC('success'))
             } else{
-                if(data.messages.length){
-                    dispatch(setAppErrorAC(data.messages[0]))
-                } else{
-                    dispatch(setAppErrorAC('Some error'))
-                }
-                dispatch(setAppStatusAC('failed')) // Этот статус просто так, никакой роли не играет, только прячет крутилку
+                HandleAppServerError(data, dispatch) // Обработка ошибки если ответ 200, но есть resultCode отличный от 0
             }
         })
         .catch((error) => {  // Обработка когда с сервера приходит ошибка (коды 400-500)
-            dispatch(setAppErrorAC(error.message))
-            dispatch(setAppStatusAC('failed'))
+            HandleAppNetworkError(error, dispatch) 
         })
     }
 }
@@ -175,17 +175,11 @@ export const updateTaskTC = (todoListId: string, taskID: string, domainModel: Up
             if(data.resultCode === 0){
                 dispatch(updateTaskAC(todoListId, taskID, domainModel)) 
             } else{
-                if(data.messages.length){
-                    dispatch(setAppErrorAC(data.messages[0]))
-                } else{
-                    dispatch(setAppErrorAC('Some error'))
-                }
-                dispatch(setAppStatusAC('failed'))
+                HandleAppServerError(data, dispatch) // Обработка ошибки если ответ 200, но есть resultCode отличный от 0
             }
         })
         .catch((error) => {  // Обработка когда с сервера приходит ошибка (коды 400-500)
-            dispatch(setAppErrorAC(error.message))
-            dispatch(setAppStatusAC('failed'))
+            HandleAppNetworkError(error, dispatch)
         })
     }
 }
