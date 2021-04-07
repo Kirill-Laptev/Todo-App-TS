@@ -1,5 +1,6 @@
 import { TextField } from '@material-ui/core'
 import React from 'react'
+import { StatusType } from '../../state/app-reducer'
 
 type EditableSpanPropsType = {
     title: string

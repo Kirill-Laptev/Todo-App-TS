@@ -1,9 +1,11 @@
 import { IconButton, TextField } from '@material-ui/core'
 import { AddBox } from '@material-ui/icons'
 import React from 'react'
+import { StatusType } from '../../state/app-reducer'
 
 export type AddItemPropsType = {
     addItem: (inputValue: string) => void
+    disabled?: boolean
 }
 
 export const AddItemForm: React.FC<AddItemPropsType> = (props) => {
@@ -37,6 +39,7 @@ export const AddItemForm: React.FC<AddItemPropsType> = (props) => {
     <>
       <div>
         <TextField
+          disabled={props.disabled}
           variant='outlined'
           type='text'
           label='Title'
@@ -45,7 +48,7 @@ export const AddItemForm: React.FC<AddItemPropsType> = (props) => {
           onChange={onChangeHandler}
           onKeyPress={onPressKeyHandler}
           value={value}/>
-        <IconButton color='primary' onClick={onAddItemHandler}>
+        <IconButton color='primary' disabled={props.disabled} onClick={onAddItemHandler}>
           <AddBox />
         </IconButton>
       </div>

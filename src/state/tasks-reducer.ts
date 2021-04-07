@@ -2,6 +2,7 @@ import { AppRootState } from './store';
 import { TaskItemType, TaskStasuses, TaskPriorities, todolistsAPI, UpdateTaskModelType } from './../api/todolists-api';
 import { AddTodolistActionType, RemoveTodolistActionType, SetTodolistsActionType } from './todolists-reducer';
 import { Dispatch } from 'redux';
+import { setAppErrorAC, setAppStatusAC } from './app-reducer';
 
 
 export type TasksStateType = {
@@ -96,9 +97,11 @@ export const setTasksAC = (todoListId: string, tasks: Array<TaskItemType>) => ({
 // thunk's
 export const fetchTasksTC = (todoListId: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(setAppStatusAC('loading'))
         todolistsAPI.getTasks(todoListId)
         .then(({data}) => {
             dispatch(setTasksAC(todoListId, data.items))
+            dispatch(setAppStatusAC('success'))
         })
     }
 }
@@ -116,9 +119,24 @@ export const removeTaskTC = (todoListId: string, taskID: string) => {
 
 export const AddTaskTC = (todoListId: string, title: string) => {
     return (dispatch: Dispatch) => {
+        dispatch(setAppStatusAC('loading'))
         todolistsAPI.createTask(todoListId, title)
         .then(({data}) => {
-            dispatch(addTaskAC(data.data.item))
+            if(data.resultCode === 0){
+                dispatch(addTaskAC(data.data.item))
+                dispatch(setAppStatusAC('success'))
+            } else{
+                if(data.messages.length){
+                    dispatch(setAppErrorAC(data.messages[0]))
+                } else{
+                    dispatch(setAppErrorAC('Some error'))
+                }
+                dispatch(setAppStatusAC('failed')) // Этот статус просто так, никакой роли не играет, только прячет крутилку
+            }
+        })
+        .catch((error) => {  // Обработка когда с сервера приходит ошибка (коды 400-500)
+            dispatch(setAppErrorAC(error.message))
+            dispatch(setAppStatusAC('failed'))
         })
     }
 }
@@ -153,8 +171,21 @@ export const updateTaskTC = (todoListId: string, taskID: string, domainModel: Up
     }
 
     todolistsAPI.updateTask(todoListId, taskID, modelApi)
-        .then((response) => {
-            dispatch(updateTaskAC(todoListId, taskID, domainModel)) 
+        .then(({data}) => {
+            if(data.resultCode === 0){
+                dispatch(updateTaskAC(todoListId, taskID, domainModel)) 
+            } else{
+                if(data.messages.length){
+                    dispatch(setAppErrorAC(data.messages[0]))
+                } else{
+                    dispatch(setAppErrorAC('Some error'))
+                }
+                dispatch(setAppStatusAC('failed'))
+            }
+        })
+        .catch((error) => {  // Обработка когда с сервера приходит ошибка (коды 400-500)
+            dispatch(setAppErrorAC(error.message))
+            dispatch(setAppStatusAC('failed'))
         })
     }
 }

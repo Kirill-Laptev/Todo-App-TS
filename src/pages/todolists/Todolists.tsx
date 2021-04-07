@@ -68,6 +68,7 @@ const Todolists = () => {
           <Paper style={{padding: '10px'}}>
             <TodoList 
               todoListId={tl.id}
+              disabled={tl.entityStatus === 'loading'}
               title={tl.title} 
               tasks={tasksForTodolist} 
               removeTask={removeTask}

@@ -9,10 +9,12 @@ import { FilterValuesType } from '../../../state/todolists-reducer'
 import { TaskItemType, TaskStasuses, todolistsAPI } from '../../../api/todolists-api'
 import { fetchTasksTC, setTasksAC } from '../../../state/tasks-reducer'
 import { useDispatch } from 'react-redux'
+import { StatusType } from '../../../state/app-reducer'
 
 
 type PropsType = {
     title: string
+    disabled: boolean
     tasks: Array<TaskItemType>
     removeTask: (id: string, todoListId: string) => void
     changeFilter: (value: FilterValuesType, todoListId: string) => void
@@ -59,10 +61,10 @@ const TodoList: React.FC<PropsType> = (props) => {
     return (
         <div className={s.todolist__block}>
             <EditableSpan title={props.title} changeItemTitle={changeTodolistTitleHandler}/>
-            <IconButton onClick={onRemoveTodolist}>
+            <IconButton disabled={props.disabled} onClick={onRemoveTodolist}>
                 <Delete />
             </IconButton>
-            <AddItemForm addItem={addTask} />
+            <AddItemForm disabled={props.disabled} addItem={addTask} />
             
                 {tasks.map((task) => {
                     return <Task
