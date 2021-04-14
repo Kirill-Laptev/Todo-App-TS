@@ -8,23 +8,28 @@ import { useSelector } from 'react-redux';
 import { AppRootState } from '../state/store';
 import { StatusType } from '../state/app-reducer';
 import ProgressLine from '../components/ProgressLine/ProgressLine';
+import { BrowserRouter, Route } from 'react-router-dom';
+import Login from '../pages/todolists/Login/Login';
 
 
 
-const AppWithRedux = () => {
+const App = () => {
 
   const status = useSelector<AppRootState, StatusType>((state) => state.app.status)
 
   return (
     <div>
-      <Header />
-      {status === 'loading' && <ProgressLine />}
-        <Container fixed>
-          <Todolists />
-        </Container>
-        <ErrorSnackBar />
+      <BrowserRouter>
+        <Header />
+        {status === 'loading' && <ProgressLine />}
+          <Container fixed>
+            <Route exact path='/' render={() => <Todolists />}/> 
+            <Route path='/login' render={() => <Login />}/> 
+          </Container>
+          <ErrorSnackBar />
+      </BrowserRouter>
     </div>
   );
 }
 
-export default AppWithRedux;
+export default App;

@@ -9,7 +9,7 @@ const initialState: Array<TodolistDomainType> = [
     // {id: todolistID2, title: 'What to buy', filter: 'all'}
 ]
 
-export const todolistsReducer = (state: Array<TodolistDomainType> = initialState, action: ActionsType): Array<TodolistDomainType> => {
+export const todolistsReducer = (state: Array<TodolistDomainType> = initialState, action: TodolistActionsType): Array<TodolistDomainType> => {
     switch(action.type){
         case 'REMOVE_TODOLIST': 
             return state.filter((todolist) => todolist.id !== action.todoListId)  
@@ -129,7 +129,7 @@ export type TodolistDomainType = TodolistType & {
     entityStatus: StatusType
 }
 
-export type ActionsType = 
+export type TodolistActionsType = 
 | RemoveTodolistActionType 
 | AddTodolistActionType  
 | ReturnType<typeof changeTodolistTitleAC>
