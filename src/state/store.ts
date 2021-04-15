@@ -22,3 +22,7 @@ export type AppRootState = ReturnType<typeof rootReducer>
 //     todolists: Array<TodolistsType>
 //     tasks: TasksStateType
 // }
+
+
+//@ts-ignore
+window.store = store

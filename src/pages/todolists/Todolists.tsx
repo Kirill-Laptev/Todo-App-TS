@@ -7,16 +7,23 @@ import { updateTaskAC, removeTaskTC, AddTaskTC, updateTaskTC, TasksStateType } f
 import { useDispatch, useSelector } from 'react-redux';
 import { AppRootState } from '../../state/store';
 import { TaskItemType, TaskStasuses, todolistsAPI } from '../../api/todolists-api';
+import { Redirect } from 'react-router-dom';
 
 
 
 const Todolists = () => {
 
   const dispatch = useDispatch()
+
   const todolists = useSelector<AppRootState, Array<TodolistDomainType>>((state) => state.todolists)
   const tasks = useSelector<AppRootState, TasksStateType>((state) => state.tasks)
+  const isLoggedIn = useSelector<AppRootState, boolean>((state) => state.auth.isLoggedIn)
 
   useEffect(() => {
+    debugger
+    if(!isLoggedIn){
+      return
+    }
     dispatch(fetchTodolistsTC())
   }, [])
 
@@ -52,6 +59,11 @@ const Todolists = () => {
   const changeTodolistTitle = useCallback((todoListId: string, title: string) => {
     dispatch(updateTodolistTitleTC(todoListId, title))
   }, [dispatch])
+
+
+  if(!isLoggedIn){
+    return <Redirect to='/login' />
+  }
 
 
   return (

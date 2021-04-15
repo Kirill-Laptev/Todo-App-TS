@@ -3,8 +3,10 @@ import TextField from '@material-ui/core/TextField';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { useFormik } from 'formik';
 import { Button, Checkbox, FormControlLabel, Grid  } from '@material-ui/core';
-import { useDispatch } from 'react-redux';
-import { loginTC } from '../../../state/auth-reducer';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginTC } from '../../state/auth-reducer';
+import { AppRootState } from '../../state/store';
+import { Redirect } from 'react-router-dom';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -25,6 +27,8 @@ const Login: React.FC = () => {
 
     const dispatch = useDispatch()
 
+    const isLoggedIn = useSelector<AppRootState, boolean>((state) => state.auth.isLoggedIn)
+
     const formik = useFormik({
         initialValues: {
             email: '',
@@ -38,7 +42,9 @@ const Login: React.FC = () => {
 
     const classes = useStyles();
 
-    
+    if(isLoggedIn){
+        return <Redirect to='/' />
+    }
 
     return (
         <div>  

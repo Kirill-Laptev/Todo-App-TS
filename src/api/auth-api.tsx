@@ -1,4 +1,5 @@
 import { instance } from './settings'
+import { ResponseType } from './todolists-api'
 
 export type LoginParamsType = {
     email: string
@@ -7,17 +8,11 @@ export type LoginParamsType = {
     captcha?: string
 }
 
-export type LoginResponseType = {
-    resultCode: number
-    messages: Array<string>
-    fieldsErrors: Array<string>
-    data: {
-      userId: number
-    }
-}
-
 export const authAPI = {
     login: (authData: LoginParamsType) => {
-        return instance.post<LoginResponseType>('/auth/login', authData)
+        return instance.post<ResponseType<{userId: number}>>('/auth/login', authData)
+    },
+    authMe: () => {
+        return instance.get<ResponseType<{id: number, email: string, login: string}>>('/auth/me')
     }
 }
