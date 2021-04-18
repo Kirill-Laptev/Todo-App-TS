@@ -107,10 +107,12 @@ export const createTodolistTC = (newTitle: string) => {
 
 export const updateTodolistTitleTC = (todoListId: string, title: string) => {
     return (dispatch: Dispatch<TodolistActionsType>) => {
+        dispatch(setAppStatusAC('loading'))
         todolistsAPI.updateTodolist(todoListId, title)
         .then(({data}) => {
             if(data.resultCode === 0){
                 dispatch(changeTodolistTitleAC(todoListId, title))
+                dispatch(setAppStatusAC('success'))
             } else{
                 HandleAppServerError(data, dispatch)
             }

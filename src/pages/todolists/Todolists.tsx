@@ -20,7 +20,6 @@ const Todolists = () => {
   const isLoggedIn = useSelector<AppRootState, boolean>((state) => state.auth.isLoggedIn)
 
   useEffect(() => {
-    debugger
     if(!isLoggedIn){
       return
     }
