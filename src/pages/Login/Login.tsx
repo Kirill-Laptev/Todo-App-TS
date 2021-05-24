@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       display: 'flex',
       flexDirection: 'column',
-      width: '300px',
+      width: '300px'
     },
     input: {
         width: '100%'
@@ -42,8 +42,8 @@ const Login: React.FC = () => {
 
     const formik = useFormik({
         initialValues: {
-            email: 'free@samuraijs.com',
-            password: 'free',
+            email: '',
+            password: '',
             rememberMe: false
         },
         onSubmit: (values) => {
@@ -61,9 +61,17 @@ const Login: React.FC = () => {
 
     return (
         <div>  
+            
             <Grid container justify='center'>
                 <form onSubmit={formik.handleSubmit} className={classes.root}>
                     <FormGroup>
+                        <p>
+                            To log in get registered <a href={'https://social-network.samuraijs.com/'}
+                            target={'_blank'}>here</a>
+                        </p>
+                        <p>Or use common test account credentials:</p> 
+                        <p>Email: free@samuraijs.com</p> 
+                        <p>Password: free</p>
                     <div className={classes.inputWrapper}>
                         <TextField
                             id="standard-helperText"
